@@ -2,10 +2,11 @@
 
 
 int main(void) {
-    // Enable GPIOE clock
+    // test code to blink an LED connected to pin PE9 on stm32 board(onboard led)
+    // enable GPIOE clock
     RCC->AHBENR |= RCC_AHBENR_GPIOEEN;
 
-    // Set PE9 (LED) to output mode
+    
     GPIOE->MODER &= ~(3 << (2 * 9));     // Clear mode bits for pin 9
     GPIOE->MODER |= (1 << (2 * 9));      // Set mode to 01 = output
 

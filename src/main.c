@@ -1,17 +1,19 @@
 #include "stm32f303xc.h"
 
+void delay(volatile uint32_t count) {
+    while (count--) __asm("nop");
+}
 
 int main(void) {
-    // test code to blink an LED connected to pin PE9 on stm32 board(onboard led)
-    // enable GPIOE clock
-    RCC->AHBENR |= RCC_AHBENR_GPIOEEN;
+    // 1. Enable clock to GPIOD
+    RCC->AHBENR |= RCC_AHBENR_GPIODEN;
 
-    
-    GPIOE->MODER &= ~(3 << (2 * 9));     // Clear mode bits for pin 9
-    GPIOE->MODER |= (1 << (2 * 9));      // Set mode to 01 = output
+    // 2. Set PD13 as output
+    GPIOD->MODER &= ~(0b11 << (13 * 2)); // Clear
+    GPIOD->MODER |=  (0b01 << (13 * 2)); // Set to output (01)
 
     while (1) {
-        GPIOE->ODR ^= (1 << 9);          // Toggle PE9
-        for (volatile int i = 0; i < 100000; i++);  // Crude delay
+        GPIOD->ODR ^= (1 << 13); // Toggle PD13 (green LED)
+        delay(1000000);
     }
 }
